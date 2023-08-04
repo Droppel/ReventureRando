@@ -1,8 +1,11 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -21,7 +24,7 @@ namespace ReventureRando
         {
             // Plugin startup logic
             PatchLogger = Logger;
-            Random.InitState(42);
+            //Random.InitState(42);
 
             harmony = new Harmony(PluginInfo.PLUGIN_GUID);
             harmony.PatchAll(Assembly.GetExecutingAssembly());
@@ -32,15 +35,46 @@ namespace ReventureRando
                 Logger.LogInfo($"Patched {p.FullDescription()}");
             }
 
-            RandomizeItems();
-            foreach (ItemTypes item in randomized.Keys)
+            if (!LoadSeed())
             {
-                Logger.LogInfo($"{item}: {randomized[item]}");
+                Logger.LogInfo($"Loading Seed failed, creating new one");
+                CreateSeed();
             }
+            PrintSeed(randomized);
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
 
-        private void RandomizeItems()
+        private bool LoadSeed()
+        {
+            try
+            {
+                randomized = JsonConvert.DeserializeObject<Dictionary<ItemTypes, ItemTypes>>(File.ReadAllText("randomizer.txt"));
+                return true;
+            } catch (Exception e)
+            {
+                Logger.LogError(e.Message);
+                return false;
+            }
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.F5))
+            {
+                CreateSeed();
+                Logger.LogInfo($"New Seed created");
+                PrintSeed(randomized);
+            }
+        }
+
+        private void CreateSeed()
+        {
+            randomized = RandomizeItems();
+            string json = JsonConvert.SerializeObject(randomized);
+            File.WriteAllText("randomizer.txt", json);
+        }
+
+        private Dictionary<ItemTypes, ItemTypes> RandomizeItems()
         {
             List<ItemTypes> items = new List<ItemTypes>() { ItemTypes.Sword, ItemTypes.Shovel, ItemTypes.MrHugs, ItemTypes.Hook, ItemTypes.Nuke, ItemTypes.Bomb,
                 ItemTypes.Shield, ItemTypes.LavaTrinket, ItemTypes.Princess, ItemTypes.DarkStone, ItemTypes.Shotgun, ItemTypes.Chicken, ItemTypes.Whistle, ItemTypes.Pizza,
@@ -48,14 +82,22 @@ namespace ReventureRando
             List<ItemTypes> itemspicker = new List<ItemTypes>(items);
 
             Logger.LogInfo($"Items: {items}");
-            randomized = new Dictionary<ItemTypes, ItemTypes>();
+            Dictionary<ItemTypes, ItemTypes>  rand = new Dictionary<ItemTypes, ItemTypes>();
             foreach (ItemTypes item in items)
             {
                 int randIndex = Random.RandomRangeInt(0, itemspicker.Count);
-                randomized.Add(item, itemspicker[randIndex]);
+                rand.Add(item, itemspicker[randIndex]);
                 itemspicker.RemoveAt(randIndex);
             }
-            Logger.LogInfo($"Randomized Items: {randomized}");
+            return rand;
+        }
+
+        private void PrintSeed(Dictionary<ItemTypes, ItemTypes> rand)
+        {
+            foreach (ItemTypes item in rand.Keys)
+            {
+                Logger.LogInfo($"{item}: {rand[item]}");
+            }
         }
 
         private void OnDestroy()
