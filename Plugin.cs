@@ -120,51 +120,8 @@ namespace ReventureRando
 
             ItemTypes newItem = Plugin.randomized[itemPrefab.ItemType];
             Plugin.PatchLogger.LogInfo($"Replacing {itemPrefab.ItemType} with {newItem}");
-            switch (newItem)
-            {
-                case ItemTypes.Sword:
-                case ItemTypes.Shovel:
-                case ItemTypes.MrHugs:
-                case ItemTypes.Hook:
-                case ItemTypes.Bomb:
-                case ItemTypes.Shield:
-                case ItemTypes.DarkStone:
-                case ItemTypes.Map:
-                case ItemTypes.Compass:
-                case ItemTypes.Pizza:
-                //case ItemTypes.MyPhone:
-                    itemPrefab = GameObject.Find($"TreasureChest_{newItem}").GetComponent<TreasureChest>().content.GetComponent<TreasureItem>().ItemGrantedPrefab;
-                    Plugin.PatchLogger.LogInfo($"Normal Chest: {newItem}");
-                    return true;
-                case ItemTypes.Whistle:
-                    itemPrefab = GameObject.Find($"TreasureChest_WhistleOfTime").GetComponent<TreasureChest>().content.GetComponent<TreasureItem>().ItemGrantedPrefab;
-                    Plugin.PatchLogger.LogInfo($"Special Chest: {newItem}");
-                    return true;
-                case ItemTypes.Nuke:
-                    itemPrefab = GameObject.Find($"TreasureChest_Cannonball").GetComponent<TreasureChest>().content.GetComponent<TreasureItem>().ItemGrantedPrefab;
-                    Plugin.PatchLogger.LogInfo($"Special Chest: {newItem}");
-                    return true;
-                case ItemTypes.LavaTrinket:
-                    itemPrefab = GameObject.Find($"TreasureChest_Trinket").GetComponent<TreasureChest>().content.GetComponent<TreasureItem>().ItemGrantedPrefab;
-                    Plugin.PatchLogger.LogInfo($"Special Chest: {newItem}");
-                    return true;
-                //case ItemTypes.Anvil:
-                case ItemTypes.Chicken:
-                case ItemTypes.Shotgun:
-                    itemPrefab = GameObject.Find($"Item {newItem}").GetComponent<TreasureItem>().ItemGrantedPrefab;
-                    Plugin.PatchLogger.LogInfo($"Normal Item: {newItem}");
-                    return true;
-                case ItemTypes.Princess:
-                    itemPrefab = GameObject.Find($"World/NPCs/Item Princess").GetComponent<TreasureItem>().ItemGrantedPrefab;
-                    Plugin.PatchLogger.LogInfo($"Princess");
-                    return true;
-                //case ItemTypes.Strawberry:
-                //    itemPrefab = GameObject.Find($"Strawberry").GetComponent<CharacterItem>();
-                //    Plugin.PatchLogger.LogInfo($"Strawberry");
-                //    return true;
-                default:
-                    return true;
-            }
+            itemPrefab = (CharacterItem)Resources.FindObjectsOfTypeAll(typeof(CharacterItem)).FirstOrDefault(g => ((CharacterItem)g).ItemType == newItem);
+            return true;
         }
     }
 
