@@ -78,9 +78,9 @@ namespace ReventureRando
         {
             List<ItemTypes> items = new List<ItemTypes>() { ItemTypes.Sword, ItemTypes.Shovel, ItemTypes.MrHugs, ItemTypes.Hook, ItemTypes.Nuke, ItemTypes.Bomb,
                 ItemTypes.Shield, ItemTypes.LavaTrinket, ItemTypes.Princess, ItemTypes.DarkStone, ItemTypes.Shotgun, ItemTypes.Chicken, ItemTypes.Whistle, ItemTypes.Pizza,
-                ItemTypes.Compass, ItemTypes.Map, ItemTypes.Anvil, ItemTypes.PhishingRod};
+                ItemTypes.Compass, ItemTypes.Map, ItemTypes.PhishingRod};
             //Unused Items
-            //ItemTypes.Strawberry, ItemTypes.Bag, ItemTypes.Boomerang, ItemTypes.Cardventure, ItemTypes.Gem, ItemTypes.Hint, ItemTypes.Prototype, ItemTypes.Strawberry, ItemTypes.SuperSword, ItemTypes.TetraGem, ItemTypes.XrayGoogles
+            //ItemTypes.Anvil, ItemTypes.Strawberry, ItemTypes.Bag, ItemTypes.Boomerang, ItemTypes.Cardventure, ItemTypes.Gem, ItemTypes.Hint, ItemTypes.Prototype, ItemTypes.Strawberry, ItemTypes.SuperSword, ItemTypes.TetraGem, ItemTypes.XrayGoogles
             List<ItemTypes> itemspicker = new List<ItemTypes>(items);
 
             Logger.LogInfo($"Items: {items}");
