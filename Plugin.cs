@@ -1,9 +1,11 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace ReventureRando
 {
@@ -64,9 +66,8 @@ namespace ReventureRando
     }
 
     [HarmonyPatch(typeof(Hero))]
-    public class Patch
+    public class HeroPatch
     {
-
         [HarmonyPatch("ActivateSkill")]
         private static bool Prefix(ref Hero __instance, ref CharacterItem itemPrefab)
         {
@@ -123,6 +124,27 @@ namespace ReventureRando
                     return true;
             }
         }
+    }
 
+    [HarmonyPatch(typeof(EndingProvider))]
+    public class EndingProviderPatch
+    {
+        [HarmonyPatch("FinalizeRun", new Type[] { typeof(float), typeof(EndingCinematicConfiguration), typeof(bool) })]
+        private static bool Prefix(ref EndingCinematicConfiguration configuration)
+        {
+            configuration.skippable = true;
+            return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(SessionProvider))]
+    public class SessionProviderPatch
+    {
+        [HarmonyPatch("IsInitialTextReaded", new Type[] { typeof(EndingTypes) })]
+        private static bool Prefix(ref bool __result)
+        {
+            __result = true;
+            return false;
+        }
     }
 }
