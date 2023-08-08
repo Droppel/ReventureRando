@@ -28,5 +28,12 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\SteamLibrary\steamapps\common\Reventure\Reventure_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
+    <Reference Include="Sirenix.Serialization">
+      <HintPath>..\..\SteamLibrary\steamapps\common\Reventure\Reventure_Data\Managed\Sirenix.Serialization.dll</HintPath>
+    </Reference>
   </ItemGroup>
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y &quot;$(TargetDir)ReventureRando.dll&quot; &quot;D:\SteamLibrary\steamapps\common\Reventure\BepInEx\scripts\ReventureRando.dll&quot;" />
+  </Target>
 </Project>

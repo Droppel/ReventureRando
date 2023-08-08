@@ -18,13 +18,14 @@ namespace ReventureRando
         Harmony harmony;
         public static ManualLogSource PatchLogger;
 
-        public static Dictionary<ItemTypes, ItemTypes> randomized;
+        public static Randomizer randomizer;
 
         private void Awake()
         {
             // Plugin startup logic
             PatchLogger = Logger;
             //Random.InitState(42);
+            randomizer = new Randomizer(Logger);
 
             harmony = new Harmony(PluginInfo.PLUGIN_GUID);
             harmony.PatchAll(Assembly.GetExecutingAssembly());
@@ -35,70 +36,18 @@ namespace ReventureRando
                 Logger.LogInfo($"Patched {p.FullDescription()}");
             }
 
-            if (!LoadSeed())
-            {
-                Logger.LogInfo($"Loading Seed failed, creating new one");
-                CreateSeed();
-            }
-            PrintSeed(randomized);
+            randomizer.Print();
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
-        }
-
-        private bool LoadSeed()
-        {
-            try
-            {
-                randomized = JsonConvert.DeserializeObject<Dictionary<ItemTypes, ItemTypes>>(File.ReadAllText("randomizer.txt"));
-                return true;
-            } catch (Exception e)
-            {
-                Logger.LogError(e.Message);
-                return false;
-            }
         }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.F5))
             {
-                CreateSeed();
+                randomizer.Randomize();
+                randomizer.StoreState();
                 Logger.LogInfo($"New Seed created");
-                PrintSeed(randomized);
-            }
-        }
-
-        private void CreateSeed()
-        {
-            randomized = RandomizeItems();
-            string json = JsonConvert.SerializeObject(randomized);
-            File.WriteAllText("randomizer.txt", json);
-        }
-
-        private Dictionary<ItemTypes, ItemTypes> RandomizeItems()
-        {
-            List<ItemTypes> items = new List<ItemTypes>() { ItemTypes.Sword, ItemTypes.Shovel, ItemTypes.MrHugs, ItemTypes.Hook, ItemTypes.Nuke, ItemTypes.Bomb,
-                ItemTypes.Shield, ItemTypes.LavaTrinket, ItemTypes.Princess, ItemTypes.DarkStone, ItemTypes.Shotgun, ItemTypes.Chicken, ItemTypes.Whistle, ItemTypes.Pizza,
-                ItemTypes.Compass, ItemTypes.Map, ItemTypes.PhishingRod};
-            //Unused Items
-            //ItemTypes.Anvil, ItemTypes.Strawberry, ItemTypes.Bag, ItemTypes.Boomerang, ItemTypes.Cardventure, ItemTypes.Gem, ItemTypes.Hint, ItemTypes.Prototype, ItemTypes.Strawberry, ItemTypes.SuperSword, ItemTypes.TetraGem, ItemTypes.XrayGoogles
-            List<ItemTypes> itemspicker = new List<ItemTypes>(items);
-
-            Logger.LogInfo($"Items: {items}");
-            Dictionary<ItemTypes, ItemTypes>  rand = new Dictionary<ItemTypes, ItemTypes>();
-            foreach (ItemTypes item in items)
-            {
-                int randIndex = Random.RandomRangeInt(0, itemspicker.Count);
-                rand.Add(item, itemspicker[randIndex]);
-                itemspicker.RemoveAt(randIndex);
-            }
-            return rand;
-        }
-
-        private void PrintSeed(Dictionary<ItemTypes, ItemTypes> rand)
-        {
-            foreach (ItemTypes item in rand.Keys)
-            {
-                Logger.LogInfo($"{item}: {rand[item]}");
+                randomizer.Print();
             }
         }
 
@@ -107,26 +56,28 @@ namespace ReventureRando
             harmony.UnpatchSelf();
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} unloaded!");
         }
+
     }
 
-    [HarmonyPatch(typeof(Hero))]
-    public class HeroPatch
-    {
-        [HarmonyPatch("ActivateSkill")]
-        private static bool Prefix(ref Hero __instance, ref CharacterItem itemPrefab)
-        {
-            if (!Plugin.randomized.ContainsKey(itemPrefab.ItemType))
-            {
-                return true;
-            }
+    //[HarmonyPatch(typeof(Hero))]
+    //public class HeroPatch
+    //{
+    //    [HarmonyPatch("ActivateSkill")]
+    //    private static bool Prefix(ref Hero __instance, ref CharacterItem itemPrefab)
+    //    {
+    //        if (!Plugin.randomized.ContainsKey(itemPrefab.ItemType))
+    //        {
+    //            return true;
+    //        }
 
-            ItemTypes newItem = Plugin.randomized[itemPrefab.ItemType];
-            Plugin.PatchLogger.LogInfo($"Replacing {itemPrefab.ItemType} with {newItem}");
-            itemPrefab = (CharacterItem)Resources.FindObjectsOfTypeAll(typeof(CharacterItem)).FirstOrDefault(g => ((CharacterItem)g).ItemType == newItem);
-            return true;
-        }
-    }
+    //        //ItemTypes newItem = Plugin.randomized[itemPrefab.ItemType];
+    //        //Plugin.PatchLogger.LogInfo($"Replacing {itemPrefab.ItemType} with {newItem}");
+    //        //itemPrefab = (CharacterItem)Resources.FindObjectsOfTypeAll(typeof(CharacterItem)).FirstOrDefault(g => ((CharacterItem)g).ItemType == newItem);
+    //        return true;
+    //    }
+    //}
 
+    // Allow skipping endings
     [HarmonyPatch(typeof(EndingProvider))]
     public class EndingProviderPatch
     {
@@ -138,6 +89,7 @@ namespace ReventureRando
         }
     }
 
+    // Allow skipping of initial Text
     [HarmonyPatch(typeof(SessionProvider))]
     public class SessionProviderPatch
     {
@@ -146,6 +98,41 @@ namespace ReventureRando
         {
             __result = true;
             return false;
+        }
+    }
+
+    // Prevent Softlock for Empty Treasure Chest
+    [HarmonyPatch(typeof(TreasureChest))]
+    public class TreasureChestPatch
+    {
+        [HarmonyPatch("RetrieveItem", new Type[] {})]
+        private static bool Prefix(ref TreasureChest __instance)
+        {
+            if (__instance.content == null)
+            {
+                __instance.Open();
+                return false;
+            }
+            return true;
+        }
+    }
+
+    
+    [HarmonyPatch(typeof(GameplayDirector))]
+    public class GameplayDirectorPatch
+    {
+        [HarmonyPatch("Start", new Type[] {})]
+        private static void Postfix()
+        {
+            ////Enable Boomerang Pickup
+            //if (Plugin.randomized.ContainsKey(ItemTypes.Boomerang))
+            //{
+            //    GameObject boomerangItem = GameObject.Find("World/Items/Item Boomerang");
+            //    Plugin.PatchLogger.LogInfo(boomerangItem);
+            //    boomerangItem.SetActive(true);
+            //}
+            Plugin.randomizer.ApplyToWorld();
+            return;
         }
     }
 }

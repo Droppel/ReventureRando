@@ -1,0 +1,4 @@
+﻿TODO
+Princess in house => Instant ending
+Implement Balloon
+Implement XRay goggles?
