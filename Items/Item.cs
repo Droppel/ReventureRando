@@ -39,6 +39,7 @@ namespace ReventureRando.Items
         Shotgun,
         Orbtale,
         Anvil,
-        Princess
+        Princess,
+        Boomerang
     }
 }

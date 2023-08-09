@@ -181,6 +181,9 @@ namespace ReventureRando
                     case ItemLocationEnum.Shopkeeper:
                         loc = new ShopkeeperLocation();
                         break;
+                    case ItemLocationEnum.BoomerangLocation:
+                        loc = new BoomerangLocation();
+                        break;
                 }
                 ItemEnum itemEnum = randomized[locEnum];
                 Item item = null;
@@ -247,6 +250,9 @@ namespace ReventureRando
                         break;
                     case ItemEnum.Princess:
                         item = new ReventureItem(ItemTypes.Princess);
+                        break;
+                    case ItemEnum.Boomerang:
+                        item = new ReventureItem(ItemTypes.Boomerang);
                         break;
                 }
                 loc.ReplaceItem(item);

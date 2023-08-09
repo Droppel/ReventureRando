@@ -14,7 +14,6 @@ namespace ReventureRando.ItemLocations
         public ShopkeeperLocation() : base("World/NPCs/Shopkeepers/ArmedShopkeeper/ArmedShopkeeper")
         {
             shopKeeperKilledOnce = Core.Get<IProgressionService>().IsEndingUnlocked(EndingTypes.StabShopKeeper) && Core.Get<IProgressionService>().IsEndingUnlocked(EndingTypes.EatenByFakePrincess);
-            Plugin.PatchLogger.LogInfo(shopKeeperKilledOnce);
             GameObject unarmedShopkeeper = GameObject.Find("World/NPCs/Shopkeepers/UnarmedShopkeeper");
             if (unarmedShopkeeper != null)
             {

@@ -33,16 +33,18 @@ namespace ReventureRando.ItemLocations
             EnableNewItem(item, oldGameObject);
         }
 
-        public void SpawnNewItem(Item item, GameObject oldGameObject, string name)
+        public GameObject SpawnNewItem(Item item, GameObject oldGameObject, string name)
         {
             if (item == null)
             {
-                return;
+                return null;
             }
             GameObject newItemSpawn = GameObject.Instantiate<GameObject>(item.GetPrefab(), gameObject.transform);
             newItemSpawn.name = name;
             newItemSpawn.transform.position = oldGameObject.transform.position;
             newItemSpawn.GetComponent<BoxCollider2D>().size = oldGameObject.GetComponent<BoxCollider2D>().size;
+            newItemSpawn.SetActive(true);
+            return newItemSpawn;
         }
 
         protected abstract GameObject DisableOldItem();
@@ -73,5 +75,6 @@ namespace ReventureRando.ItemLocations
         Princess,
         OrbtaleLocation,
         Shopkeeper,
+        BoomerangLocation,
     }
 }
