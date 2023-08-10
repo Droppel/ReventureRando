@@ -184,6 +184,12 @@ namespace ReventureRando
                     case ItemLocationEnum.BoomerangLocation:
                         loc = new BoomerangLocation();
                         break;
+                    case ItemLocationEnum.ChickenLocation:
+                        loc = new ChickenLocation("World/PersistentElements/ChickenNest/Phase3", "Chicken");
+                        break;
+                    case ItemLocationEnum.DarkChickenLocation:
+                        loc = new ChickenLocation("World/Items", "DarkChicken");
+                        break;
                 }
                 ItemEnum itemEnum = randomized[locEnum];
                 Item item = null;
@@ -247,6 +253,10 @@ namespace ReventureRando
                         break;
                     case ItemEnum.Anvil:
                         item = new ReventureItem(ItemTypes.Anvil);
+                        //Disable anvil cutscene
+                        TreasureItem anvilItem = GameObject.Find("World/Items/AnvilRope/SwingRope/Item Anvil").GetComponent<TreasureItem>();
+                        anvilItem.onItemPicked.m_PersistentCalls.RemoveListener(1);
+                        anvilItem.BeforePick.m_PersistentCalls.RemoveListener(0);
                         break;
                     case ItemEnum.Princess:
                         item = new ReventureItem(ItemTypes.Princess);

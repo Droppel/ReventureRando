@@ -76,5 +76,7 @@ namespace ReventureRando.ItemLocations
         OrbtaleLocation,
         Shopkeeper,
         BoomerangLocation,
+        ChickenLocation,
+        DarkChickenLocation,
     }
 }

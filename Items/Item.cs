@@ -32,7 +32,6 @@ namespace ReventureRando.Items
         MyPhone,
         Compass,
         Map,
-        Pizza,
         DarkStone,
         Chicken,
         Burger,

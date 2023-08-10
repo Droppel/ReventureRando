@@ -11,6 +11,7 @@ namespace ReventureRando.Items
         public ReventureItem(ItemTypes itemType)
         {
             prefab = GetGameObjectFromReventureItemType(itemType);
+            Plugin.PatchLogger.LogInfo($"ItemType: {itemType}, Prefab: {prefab}");
         }
 
         private GameObject GetGameObjectFromReventureItemType(ItemTypes itemType)

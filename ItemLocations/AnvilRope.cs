@@ -10,9 +10,6 @@ namespace ReventureRando.ItemLocations
     {
         public AnvilRope() : base("World/Items/AnvilRope/SwingRope")
         {
-            //TreasureItem anvilItem = GameObject.Find("World/Items/AnvilRope/SwingRope/Item Anvil").GetComponent<TreasureItem>();
-            //anvilItem.onItemPicked.m_PersistentCalls.RemoveListener(1);
-            //anvilItem.BeforePick.m_PersistentCalls.RemoveListener(0);
         }
 
         protected override GameObject DisableOldItem()

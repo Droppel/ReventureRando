@@ -1,8 +1,6 @@
 ﻿TODO
-Princess in house => Instant ending
-Location Boomerang lower chestf
-Location Chicken 1
-Location Chicken 2
-Item Chicken Turned to left?
 Implement Balloon
+Location Boomerang lower chest
+Princess in house => Instant ending
+Item on dead guard rotated
 Implement XRay goggles?

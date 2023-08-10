@@ -28,7 +28,7 @@ namespace ReventureRando.ItemLocations
 
         protected override void EnableNewItem(Item item, GameObject oldGameObject)
         {
-            if (!shopKeeperKilledOnce)
+            if (!shopKeeperKilledOnce || item == null)
             {
                 return;
             }

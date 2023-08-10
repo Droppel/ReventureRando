@@ -105,7 +105,7 @@ namespace ReventureRando
     [HarmonyPatch(typeof(TreasureChest))]
     public class TreasureChestPatch
     {
-        [HarmonyPatch("RetrieveItem", new Type[] {})]
+        [HarmonyPatch("RetrieveItem", new Type[] { })]
         private static bool Prefix(ref TreasureChest __instance)
         {
             if (__instance.content == null)
@@ -113,6 +113,7 @@ namespace ReventureRando
                 __instance.Open();
                 return false;
             }
+            __instance.content.SetActive(true);
             return true;
         }
     }
@@ -124,13 +125,6 @@ namespace ReventureRando
         [HarmonyPatch("Start", new Type[] {})]
         private static void Postfix()
         {
-            ////Enable Boomerang Pickup
-            //if (Plugin.randomized.ContainsKey(ItemTypes.Boomerang))
-            //{
-            //    GameObject boomerangItem = GameObject.Find("World/Items/Item Boomerang");
-            //    Plugin.PatchLogger.LogInfo(boomerangItem);
-            //    boomerangItem.SetActive(true);
-            //}
             Plugin.randomizer.ApplyToWorld();
             return;
         }
