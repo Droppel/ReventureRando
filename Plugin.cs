@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿using Atto;
+using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using Newtonsoft.Json;
@@ -125,6 +126,25 @@ namespace ReventureRando
         [HarmonyPatch("Start", new Type[] {})]
         private static void Postfix()
         {
+            //First Run
+            ISessionService session = Core.Get<ISessionService>();
+            IProgressionService progression = Core.Get<IProgressionService>();
+            if (progression.UnlockedEndingsCount == 0)
+            {
+                Plugin.PatchLogger.LogInfo("Unlocking Free endings");
+                List<EndingTypes> availableEndings = Enum.GetValues(typeof(EndingTypes)).Cast<EndingTypes>().ToList();
+                availableEndings.Remove(EndingTypes.None);
+                availableEndings.Remove(EndingTypes.UltimateEnding);
+                availableEndings.Remove(EndingTypes.ThankYouForPlaying);
+                for (int i = 0; i < 70; i++)
+                {
+                    int randInd = Random.RandomRangeInt(0, availableEndings.Count);
+                    progression.UnlockEnding(availableEndings[randInd]);
+                    availableEndings.RemoveAt(randInd);
+                }
+                
+            }
+            
             Plugin.randomizer.ApplyToWorld();
             return;
         }
