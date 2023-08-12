@@ -28,11 +28,15 @@ namespace ReventureRando.ItemLocations
 
         protected override void EnableNewItem(Item item, GameObject oldGameObject)
         {
-            if (!shopKeeperKilledOnce || item == null)
+            if (!shopKeeperKilledOnce)
             {
                 return;
             }
             NPC shopkeeper = gameObject.GetComponent<NPC>();
+            if (item == null)
+            {
+                shopkeeper.spawnOnKill = null;
+            }
             shopkeeper.spawnOnKill = item.GetPrefab();
         }
     }
