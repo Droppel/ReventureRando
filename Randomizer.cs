@@ -119,6 +119,12 @@ namespace ReventureRando
                         loc = new SwordPedestal();
                         break;
                     case ItemLocationEnum.SwordAtHome:
+                        //Disable fake open chest if item in guard needs to be picked up
+                        GameObject fakeOpenChest = GameObject.Find("World/Items/SwordAtHome/OpenChest");
+                        if (fakeOpenChest != null)
+                        {
+                            fakeOpenChest.SetActive(false);
+                        }
                         loc = new TreasureChestLocation("World/Items/SwordAtHome/TreasureChest_Sword");
                         break;
                     case ItemLocationEnum.TreasureRoom:
