@@ -8,9 +8,9 @@ namespace ReventureRando.Items
 {
     public class ReventureItem : Item
     {
-        public ReventureItem(ItemTypes itemType)
+        public ReventureItem(ItemTypes reventureItemType, ItemEnum itemType) : base(itemType)
         {
-            prefab = GetGameObjectFromReventureItemType(itemType);
+            prefab = GetGameObjectFromReventureItemType(reventureItemType);
         }
 
         private GameObject GetGameObjectFromReventureItemType(ItemTypes itemType)

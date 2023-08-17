@@ -208,71 +208,71 @@ namespace ReventureRando
                     case ItemEnum.None:
                         break;
                     case ItemEnum.Sword:
-                        item = new ReventureItem(ItemTypes.Sword);
+                        item = new ReventureItem(ItemTypes.Sword, itemEnum);
                         break;
                     case ItemEnum.Bomb:
-                        item = new ReventureItem(ItemTypes.Bomb);
+                        item = new ReventureItem(ItemTypes.Bomb, itemEnum);
                         break;
                     case ItemEnum.Hook:
-                        item = new ReventureItem(ItemTypes.Hook);
+                        item = new ReventureItem(ItemTypes.Hook, itemEnum);
                         break;
                     case ItemEnum.WhistleOfTime:
-                        item = new ReventureItem(ItemTypes.Whistle);
+                        item = new ReventureItem(ItemTypes.Whistle, itemEnum);
                         break;
                     case ItemEnum.MrHugs:
-                        item = new ReventureItem(ItemTypes.MrHugs);
+                        item = new ReventureItem(ItemTypes.MrHugs, itemEnum);
                         break;
                     case ItemEnum.Shovel:
-                        item = new ReventureItem(ItemTypes.Shovel);
+                        item = new ReventureItem(ItemTypes.Shovel, itemEnum);
                         break;
                     case ItemEnum.Trinket:
-                        item = new ReventureItem(ItemTypes.LavaTrinket);
+                        item = new ReventureItem(ItemTypes.LavaTrinket, itemEnum);
                         break;
                     case ItemEnum.Nuke:
-                        item = new ReventureItem(ItemTypes.Nuke);
+                        item = new ReventureItem(ItemTypes.Nuke, itemEnum);
                         break;
                     case ItemEnum.FishingRod:
-                        item = new ReventureItem(ItemTypes.PhishingRod);
+                        item = new ReventureItem(ItemTypes.PhishingRod, itemEnum);
                         break;
                     case ItemEnum.Shield:
-                        item = new ReventureItem(ItemTypes.Shield);
+                        item = new ReventureItem(ItemTypes.Shield, itemEnum);
                         break;
                     case ItemEnum.MyPhone:
-                        item = new ReventureItem(ItemTypes.MyPhone);
+                        item = new ReventureItem(ItemTypes.MyPhone, itemEnum);
                         break;
                     case ItemEnum.Compass:
-                        item = new ReventureItem(ItemTypes.Compass);
+                        item = new ReventureItem(ItemTypes.Compass, itemEnum);
                         break;
                     case ItemEnum.Map:
-                        item = new ReventureItem(ItemTypes.Map);
+                        item = new ReventureItem(ItemTypes.Map, itemEnum);
                         break;
                     case ItemEnum.Chicken:
-                        item = new ReventureItem(ItemTypes.Chicken);
+                        item = new ReventureItem(ItemTypes.Chicken, itemEnum);
                         break;
                     case ItemEnum.Orbtale:
-                        item = new ReventureItem(ItemTypes.Cardventure);
+                        item = new ReventureItem(ItemTypes.Cardventure, itemEnum);
                         break;
                     case ItemEnum.Burger:
-                        item = new ReventureItem(ItemTypes.Pizza);
+                        item = new ReventureItem(ItemTypes.Pizza, itemEnum);
                         break;
                     case ItemEnum.DarkStone:
-                        item = new ReventureItem(ItemTypes.DarkStone);
+                        item = new ReventureItem(ItemTypes.DarkStone, itemEnum);
                         break;
                     case ItemEnum.Shotgun:
-                        item = new ReventureItem(ItemTypes.Shotgun);
+                        item = new ReventureItem(ItemTypes.Shotgun, itemEnum);
                         break;
                     case ItemEnum.Anvil:
-                        item = new ReventureItem(ItemTypes.Anvil);
+                        item = new ReventureItem(ItemTypes.Anvil, itemEnum);
                         //Disable anvil cutscene
                         TreasureItem anvilItem = GameObject.Find("World/Items/AnvilRope/SwingRope/Item Anvil").GetComponent<TreasureItem>();
                         anvilItem.onItemPicked.m_PersistentCalls.RemoveListener(1);
                         anvilItem.BeforePick.m_PersistentCalls.RemoveListener(0);
                         break;
                     case ItemEnum.Princess:
-                        item = new ReventureItem(ItemTypes.Princess);
+                        item = new ReventureItem(ItemTypes.Princess, itemEnum);
                         break;
                     case ItemEnum.Boomerang:
-                        item = new ReventureItem(ItemTypes.Boomerang);
+                        item = new ReventureItem(ItemTypes.Boomerang, itemEnum);
                         break;
                 }
                 loc.ReplaceItem(item);

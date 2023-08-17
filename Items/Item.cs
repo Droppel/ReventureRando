@@ -10,10 +10,21 @@ namespace ReventureRando.Items
     public abstract class Item
     {
         protected GameObject prefab;
+        protected ItemEnum itemType;
+
+        public Item(ItemEnum _itemType)
+        {
+            itemType = _itemType;
+        }
 
         public GameObject GetPrefab()
         {
             return prefab;
+        }
+
+        public ItemEnum GetItemType()
+        {
+            return itemType;
         }
     }
     public enum ItemEnum

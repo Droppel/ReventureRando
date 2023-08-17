@@ -28,6 +28,14 @@ namespace ReventureRando.ItemLocations
                 return;
             }
             chest.content = item.GetPrefab();
+            if (item.GetItemType() == ItemEnum.Chicken || item.GetItemType() == ItemEnum.Princess)
+            {
+                NPC npcController = item.GetPrefab().GetComponent<NPC>();
+                NPC chestNPCController = gameObject.AddComponent<NPC>();
+                chestNPCController.hugEndingType = npcController.hugEndingType;
+                chestNPCController.stabEndingType = npcController.stabEndingType;
+                chestNPCController.shotgunEndingType = npcController.shotgunEndingType;
+            }
         }
     }
 }
