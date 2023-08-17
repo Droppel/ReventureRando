@@ -109,7 +109,11 @@ namespace ReventureRando
 
         public void ApplyToWorld()
         {
+            //Reduce TakePrincessToLonksHouse size to allow taking Princess from SwordAtHome
+            GameObject takePrincessToLonksHouseEnding = GameObject.Find("World/EndTriggers/78_TakePrincessToLonksHouse_End");
+            takePrincessToLonksHouseEnding.transform.localScale = new Vector3(1f, 2f, 1f);
 
+            // Place randomized items
             foreach (ItemLocationEnum locEnum in randomized.Keys)
             {
                 ItemLocation loc = null;
