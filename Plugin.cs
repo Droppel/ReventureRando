@@ -140,6 +140,7 @@ namespace ReventureRando
                 {
                     int randInd = Random.RandomRangeInt(0, availableEndings.Count);
                     progression.UnlockEnding(availableEndings[randInd]);
+                    session.SetDiscovered(availableEndings[randInd]);
                     availableEndings.RemoveAt(randInd);
                 }
                 
