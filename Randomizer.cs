@@ -93,8 +93,23 @@ namespace ReventureRando
 
         private void LoadSettings()
         {
-            availableLocations = Enum.GetValues(typeof(ItemLocationEnum)).Cast<ItemLocationEnum>().ToList();
-            availableItems = Enum.GetValues(typeof(ItemEnum)).Cast<ItemEnum>().Where(x => x != ItemEnum.None).ToList();
+            IEnumerable<string> disabledLocationsString = Plugin.config.availableLocationsBlacklist.Value.Split(',').ToList<string>();
+            List <ItemLocationEnum> disabledLocations = new List<ItemLocationEnum>();
+            foreach (string s in disabledLocationsString)
+            {
+                Enum.TryParse(s, out ItemLocationEnum asEnum);
+                disabledLocations.Add(asEnum);
+            }
+            availableLocations = Enum.GetValues(typeof(ItemLocationEnum)).Cast<ItemLocationEnum>().Where(x => !disabledLocations.Contains(x)).ToList();
+
+            IEnumerable<string> disabledItemsString = Plugin.config.availableItemsBlacklist.Value.Split(',').ToList<string>();
+            List<ItemEnum> disabledItems = new List<ItemEnum>();
+            foreach (string s in disabledItemsString)
+            {
+                Enum.TryParse(s, out ItemEnum asEnum);
+                disabledItems.Add(asEnum);
+            }
+            availableItems = Enum.GetValues(typeof(ItemEnum)).Cast<ItemEnum>().Where(x => (x != ItemEnum.None && !disabledItems.Contains(x))).ToList();
             //availableLocations = new List<ItemLocationEnum> { ItemLocationEnum.SwordPedestal, ItemLocationEnum.SwordAtHome };
             //availableItems = new List<ItemEnum> { ItemEnum.Sword, ItemEnum.Bomb };
         }

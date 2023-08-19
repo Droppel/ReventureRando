@@ -1,5 +1,6 @@
 ﻿using Atto;
 using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using Newtonsoft.Json;
@@ -21,10 +22,17 @@ namespace ReventureRando
 
         public static Randomizer randomizer;
 
+        public static Configuration config;
+
+        //Configuration
+
         private void Awake()
         {
             // Plugin startup logic
             PatchLogger = Logger;
+
+            config = new Configuration(this);
+
             //Random.InitState(42);
             randomizer = new Randomizer(Logger);
 
@@ -136,7 +144,7 @@ namespace ReventureRando
                 availableEndings.Remove(EndingTypes.None);
                 availableEndings.Remove(EndingTypes.UltimateEnding);
                 availableEndings.Remove(EndingTypes.ThankYouForPlaying);
-                for (int i = 0; i < 70; i++)
+                for (int i = 0; i < Plugin.config.freeEndingCount.Value; i++)
                 {
                     int randInd = Random.RandomRangeInt(0, availableEndings.Count);
                     progression.UnlockEnding(availableEndings[randInd]);
